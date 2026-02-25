@@ -1,5 +1,8 @@
 package com.projeto.gerenciadordelivros;
 
+import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
+import com.projeto.gerenciadordelivros.domain.model.Autor;
+import com.projeto.gerenciadordelivros.domain.model.Livro;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
