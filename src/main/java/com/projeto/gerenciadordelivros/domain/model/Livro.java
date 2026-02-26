@@ -16,15 +16,26 @@ public class Livro {
     private Integer anoPublicacao;
     private BigDecimal valor;
     private Set<Autor> autores;
+    private Set<Assunto> assuntos;
 
-    public Livro(String titulo, BigDecimal valor, Set<Autor> autores) {
+    public Livro(String titulo, BigDecimal valor, Set<Autor> autores, Set<Assunto> assuntos) {
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new RegraNegocioException("Titulo do livro e obrigatorio.");
+        }
+        if (valor == null || valor.signum() < 0) {
+            throw new RegraNegocioException("Valor do livro nao pode ser negativo.");
+        }
         if (autores == null || autores.isEmpty()) {
             throw new RegraNegocioException("Livro deve ter ao menos um autor.");
+        }
+        if (assuntos == null || assuntos.isEmpty()) {
+            throw new RegraNegocioException("Livro deve ter ao menos um assunto.");
         }
 
         this.titulo = titulo;
         this.valor = valor;
         this.autores = new HashSet<>(autores);
+        this.assuntos = new HashSet<>(assuntos);
     }
 
     public Long getId() {
@@ -53,5 +64,9 @@ public class Livro {
 
     public Set<Autor> getAutores() {
         return Collections.unmodifiableSet(autores);
+    }
+
+    public Set<Assunto> getAssuntos() {
+        return Collections.unmodifiableSet(assuntos);
     }
 }
