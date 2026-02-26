@@ -2,6 +2,7 @@ package com.projeto.gerenciadordelivros;
 
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Autor;
+import com.projeto.gerenciadordelivros.domain.model.Assunto;
 import com.projeto.gerenciadordelivros.domain.model.Livro;
 import org.junit.jupiter.api.Test;
 
@@ -14,20 +15,87 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class LivroTest {
 
     @Test
-    void deveCriarLivroComValorValido() {
+    void deveCriarLivroComAutoresEAssuntosValidos() {
         Livro livro = new Livro(
                 "Clean Code",
                 new BigDecimal("120.00"),
-                Set.of(new Autor("Robert C. Martin"))
+                Set.of(new Autor("Robert C. Martin")),
+                Set.of(new Assunto("Arquitetura"))
         );
 
+        assertEquals("Clean Code", livro.getTitulo());
         assertEquals(new BigDecimal("120.00"), livro.getValor());
     }
 
     @Test
     void naoDeveCriarLivroSemAutor() {
         assertThrows(RegraNegocioException.class, () ->
-                new Livro("Clean Code", new BigDecimal("120.00"), Set.of())
+                new Livro(
+                        "Clean Code",
+                        new BigDecimal("120.00"),
+                        Set.of(),
+                        Set.of(new Assunto("Arquitetura"))
+                )
         );
+    }
+
+    @Test
+    void naoDeveCriarLivroSemAssunto() {
+        assertThrows(RegraNegocioException.class, () ->
+                new Livro(
+                        "Clean Code",
+                        new BigDecimal("120.00"),
+                        Set.of(new Autor("Robert C. Martin")),
+                        Set.of()
+                )
+        );
+    }
+
+    @Test
+    void naoDeveCriarLivroComValorNegativo() {
+        assertThrows(RegraNegocioException.class, () ->
+                new Livro(
+                        "Clean Code",
+                        new BigDecimal("-10.00"),
+                        Set.of(new Autor("Robert C. Martin")),
+                        Set.of(new Assunto("Arquitetura"))
+                )
+        );
+    }
+
+    @Test
+    void naoDeveCriarLivroSemTitulo() {
+        assertThrows(RegraNegocioException.class, () ->
+                new Livro(
+                        "",
+                        new BigDecimal("120.00"),
+                        Set.of(new Autor("Robert C. Martin")),
+                        Set.of(new Assunto("Arquitetura"))
+                )
+        );
+    }
+
+    @Test
+    void naoDevePermitirAutoresDuplicados() {
+        assertThrows(RegraNegocioException.class, () ->
+                new Livro(
+                        "Clean Code",
+                        new BigDecimal("120.00"),
+                        Set.of(new Autor("Robert C. Martin"), new Autor("Robert C. Martin")),
+                        Set.of(new Assunto("Arquitetura"))
+                )
+        );
+    }
+
+    @Test
+    void valorDoLivroDeveTerDuasCasasDecimais() {
+        Livro livro = new Livro(
+                "Clean Code",
+                new BigDecimal("120"),
+                Set.of(new Autor("Robert C. Martin")),
+                Set.of(new Assunto("Arquitetura"))
+        );
+
+        assertEquals(2, livro.getValor().scale());
     }
 }

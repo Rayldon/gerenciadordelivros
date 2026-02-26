@@ -11,15 +11,22 @@ class AssuntoTest {
 
     @Test
     void deveCriarAssuntoComDescricaoValida() {
-        Assunto assunto = new Assunto("Arquitetura de Software");
+        Assunto assunto = new Assunto("Arquitetura");
 
-        assertEquals("Arquitetura de Software", assunto.getDescricao());
+        assertEquals("Arquitetura", assunto.getDescricao());
     }
 
     @Test
     void naoDeveCriarAssuntoComDescricaoVazia() {
         assertThrows(RegraNegocioException.class, () ->
                 new Assunto("")
+        );
+    }
+
+    @Test
+    void naoDeveCriarAssuntoComDescricaoEmBranco() {
+        assertThrows(RegraNegocioException.class, () ->
+                new Assunto("   ")
         );
     }
 }
