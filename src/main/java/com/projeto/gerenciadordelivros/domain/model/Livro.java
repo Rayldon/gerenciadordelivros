@@ -3,9 +3,11 @@ package com.projeto.gerenciadordelivros.domain.model;
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Livro {
 
@@ -28,12 +30,21 @@ public class Livro {
         if (autores == null || autores.isEmpty()) {
             throw new RegraNegocioException("Livro deve ter ao menos um autor.");
         }
+        long quantidadeNomesAutores = autores.stream()
+                .map(Autor::getNome)
+                .map(String::trim)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet())
+                .size();
+        if (quantidadeNomesAutores != autores.size()) {
+            throw new RegraNegocioException("Livro nao pode ter autores duplicados.");
+        }
         if (assuntos == null || assuntos.isEmpty()) {
             throw new RegraNegocioException("Livro deve ter ao menos um assunto.");
         }
 
         this.titulo = titulo;
-        this.valor = valor;
+        this.valor = valor.setScale(2, RoundingMode.HALF_UP);
         this.autores = new HashSet<>(autores);
         this.assuntos = new HashSet<>(assuntos);
     }
