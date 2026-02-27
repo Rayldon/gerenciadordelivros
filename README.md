@@ -70,6 +70,17 @@ Somente e2e:
 .\mvnw -Dtest=LivroE2ETest test
 ```
 
+## Cobertura de testes
+- Ferramenta: Jacoco (Maven plugin).
+- Cobertura atual de linhas: **80,13%**.
+- Cobertura atual de instrucoes: **79,71%**.
+- Comando para gerar novamente:
+```powershell
+.\mvnw clean test
+```
+- Relatorio HTML:
+`target/site/jacoco/index.html`
+
 ## Pontos importantes para avaliacao tecnica
 - Dominio sem dependencia de Spring (regras no centro do sistema)
 - Casos de uso dependem de portas (`domain.port`) e nao de JPA direto
