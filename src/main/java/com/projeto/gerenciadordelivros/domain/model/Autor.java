@@ -1,7 +1,9 @@
 package com.projeto.gerenciadordelivros.domain.model;
 
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
+import lombok.Getter;
 
+@Getter
 public class Autor {
 
     private Long id;
@@ -22,14 +24,6 @@ public class Autor {
         if (nome == null || nome.trim().isEmpty()) {
             throw new RegraNegocioException("Nome do autor e obrigatorio.");
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
     }
 }
 

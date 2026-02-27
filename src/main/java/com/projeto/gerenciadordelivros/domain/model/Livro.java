@@ -1,6 +1,7 @@
 package com.projeto.gerenciadordelivros.domain.model;
 
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
 public class Livro {
 
     private Long id;
@@ -59,30 +61,6 @@ public class Livro {
         if (assuntos == null || assuntos.isEmpty()) {
             throw new RegraNegocioException("Livro deve ter ao menos um assunto.");
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getEditora() {
-        return editora;
-    }
-
-    public Integer getEdicao() {
-        return edicao;
-    }
-
-    public Integer getAnoPublicacao() {
-        return anoPublicacao;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
     }
 
     public Set<Autor> getAutores() {

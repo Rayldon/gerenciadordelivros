@@ -1,6 +1,7 @@
 package com.projeto.gerenciadordelivros.infrastructure.web.controller;
 
 import com.projeto.gerenciadordelivros.application.usecase.GerarRelatorioAutoresUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/relatorios")
+@RequiredArgsConstructor
 public class RelatorioController {
 
     private final GerarRelatorioAutoresUseCase gerarRelatorioAutoresUseCase;
-
-    public RelatorioController(GerarRelatorioAutoresUseCase gerarRelatorioAutoresUseCase) {
-        this.gerarRelatorioAutoresUseCase = gerarRelatorioAutoresUseCase;
-    }
 
     @GetMapping(value = "/autores", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> relatorioAutores() {

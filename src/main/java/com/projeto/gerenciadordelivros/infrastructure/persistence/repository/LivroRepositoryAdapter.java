@@ -4,21 +4,18 @@ import com.projeto.gerenciadordelivros.domain.model.Livro;
 import com.projeto.gerenciadordelivros.domain.port.LivroRepository;
 import com.projeto.gerenciadordelivros.domain.port.Paginacao;
 import com.projeto.gerenciadordelivros.infrastructure.persistence.mapper.LivroEntityMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class LivroRepositoryAdapter implements LivroRepository {
 
     private final LivroJpaRepository livroJpaRepository;
     private final LivroEntityMapper livroEntityMapper;
-
-    public LivroRepositoryAdapter(LivroJpaRepository livroJpaRepository, LivroEntityMapper livroEntityMapper) {
-        this.livroJpaRepository = livroJpaRepository;
-        this.livroEntityMapper = livroEntityMapper;
-    }
 
     @Override
     public Livro salvar(Livro livro) {

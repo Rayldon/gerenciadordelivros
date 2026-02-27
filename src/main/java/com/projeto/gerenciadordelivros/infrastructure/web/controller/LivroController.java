@@ -8,6 +8,7 @@ import com.projeto.gerenciadordelivros.infrastructure.web.dto.LivroRequest;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.LivroResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.PageResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.mapper.LivroWebMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/livros")
+@RequiredArgsConstructor
 public class LivroController {
 
     private final CriarLivroUseCase criarLivroUseCase;
@@ -29,18 +31,6 @@ public class LivroController {
     private final ExcluirLivroUseCase excluirLivroUseCase;
     private final ListarLivrosUseCase listarLivrosUseCase;
     private final LivroWebMapper mapper;
-
-    public LivroController(CriarLivroUseCase criarLivroUseCase,
-                           AtualizarLivroUseCase atualizarLivroUseCase,
-                           ExcluirLivroUseCase excluirLivroUseCase,
-                           ListarLivrosUseCase listarLivrosUseCase,
-                           LivroWebMapper mapper) {
-        this.criarLivroUseCase = criarLivroUseCase;
-        this.atualizarLivroUseCase = atualizarLivroUseCase;
-        this.excluirLivroUseCase = excluirLivroUseCase;
-        this.listarLivrosUseCase = listarLivrosUseCase;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

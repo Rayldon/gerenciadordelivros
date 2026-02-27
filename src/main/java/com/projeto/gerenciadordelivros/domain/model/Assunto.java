@@ -1,7 +1,9 @@
 package com.projeto.gerenciadordelivros.domain.model;
 
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
+import lombok.Getter;
 
+@Getter
 public class Assunto {
 
     private Long id;
@@ -22,13 +24,5 @@ public class Assunto {
         if (descricao == null || descricao.trim().isEmpty()) {
             throw new RegraNegocioException("Descricao do assunto e obrigatoria.");
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 }

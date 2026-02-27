@@ -3,19 +3,17 @@ package com.projeto.gerenciadordelivros.infrastructure.persistence.repository;
 import com.projeto.gerenciadordelivros.domain.model.Assunto;
 import com.projeto.gerenciadordelivros.domain.port.AssuntoRepository;
 import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AssuntoEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class AssuntoRepositoryAdapter implements AssuntoRepository {
 
     private final AssuntoJpaRepository assuntoJpaRepository;
-
-    public AssuntoRepositoryAdapter(AssuntoJpaRepository assuntoJpaRepository) {
-        this.assuntoJpaRepository = assuntoJpaRepository;
-    }
 
     @Override
     public Assunto salvar(Assunto assunto) {

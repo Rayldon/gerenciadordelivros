@@ -3,19 +3,17 @@ package com.projeto.gerenciadordelivros.infrastructure.persistence.repository;
 import com.projeto.gerenciadordelivros.domain.model.Autor;
 import com.projeto.gerenciadordelivros.domain.port.AutorRepository;
 import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AutorEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class AutorRepositoryAdapter implements AutorRepository {
 
     private final AutorJpaRepository autorJpaRepository;
-
-    public AutorRepositoryAdapter(AutorJpaRepository autorJpaRepository) {
-        this.autorJpaRepository = autorJpaRepository;
-    }
 
     @Override
     public Autor salvar(Autor autor) {

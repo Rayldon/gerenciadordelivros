@@ -7,6 +7,7 @@ import com.projeto.gerenciadordelivros.application.usecase.ListarAutoresUseCase;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AutorRequest;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AutorResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.mapper.AutorWebMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/autores")
+@RequiredArgsConstructor
 public class AutorController {
 
     private final CriarAutorUseCase criarAutorUseCase;
@@ -29,18 +31,6 @@ public class AutorController {
     private final ExcluirAutorUseCase excluirAutorUseCase;
     private final ListarAutoresUseCase listarAutoresUseCase;
     private final AutorWebMapper mapper;
-
-    public AutorController(CriarAutorUseCase criarAutorUseCase,
-                           AtualizarAutorUseCase atualizarAutorUseCase,
-                           ExcluirAutorUseCase excluirAutorUseCase,
-                           ListarAutoresUseCase listarAutoresUseCase,
-                           AutorWebMapper mapper) {
-        this.criarAutorUseCase = criarAutorUseCase;
-        this.atualizarAutorUseCase = atualizarAutorUseCase;
-        this.excluirAutorUseCase = excluirAutorUseCase;
-        this.listarAutoresUseCase = listarAutoresUseCase;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

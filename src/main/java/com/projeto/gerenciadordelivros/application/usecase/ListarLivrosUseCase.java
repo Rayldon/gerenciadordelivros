@@ -4,16 +4,14 @@ import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Livro;
 import com.projeto.gerenciadordelivros.domain.port.Paginacao;
 import com.projeto.gerenciadordelivros.domain.port.LivroRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ListarLivrosUseCase {
 
     private final LivroRepository livroRepository;
-
-    public ListarLivrosUseCase(LivroRepository livroRepository) {
-        this.livroRepository = livroRepository;
-    }
 
     public Paginacao<Livro> executar(int pagina, int tamanho) {
         if (pagina < 0) {

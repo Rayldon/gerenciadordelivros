@@ -10,6 +10,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -17,6 +20,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "livro")
+@Getter
+@Setter
+@NoArgsConstructor
 public class LivroEntity {
 
     @Id
@@ -45,44 +51,4 @@ public class LivroEntity {
             inverseJoinColumns = @JoinColumn(name = "assunto_cod_as")
     )
     private Set<AssuntoEntity> assuntos = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public Set<AutorEntity> getAutores() {
-        return autores;
-    }
-
-    public void setAutores(Set<AutorEntity> autores) {
-        this.autores = autores;
-    }
-
-    public Set<AssuntoEntity> getAssuntos() {
-        return assuntos;
-    }
-
-    public void setAssuntos(Set<AssuntoEntity> assuntos) {
-        this.assuntos = assuntos;
-    }
 }

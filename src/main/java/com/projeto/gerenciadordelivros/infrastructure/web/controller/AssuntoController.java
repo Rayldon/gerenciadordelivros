@@ -7,6 +7,7 @@ import com.projeto.gerenciadordelivros.application.usecase.ListarAssuntosUseCase
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AssuntoRequest;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AssuntoResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.mapper.AssuntoWebMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/assuntos")
+@RequiredArgsConstructor
 public class AssuntoController {
 
     private final CriarAssuntoUseCase criarAssuntoUseCase;
@@ -29,18 +31,6 @@ public class AssuntoController {
     private final ExcluirAssuntoUseCase excluirAssuntoUseCase;
     private final ListarAssuntosUseCase listarAssuntosUseCase;
     private final AssuntoWebMapper mapper;
-
-    public AssuntoController(CriarAssuntoUseCase criarAssuntoUseCase,
-                             AtualizarAssuntoUseCase atualizarAssuntoUseCase,
-                             ExcluirAssuntoUseCase excluirAssuntoUseCase,
-                             ListarAssuntosUseCase listarAssuntosUseCase,
-                             AssuntoWebMapper mapper) {
-        this.criarAssuntoUseCase = criarAssuntoUseCase;
-        this.atualizarAssuntoUseCase = atualizarAssuntoUseCase;
-        this.excluirAssuntoUseCase = excluirAssuntoUseCase;
-        this.listarAssuntosUseCase = listarAssuntosUseCase;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
