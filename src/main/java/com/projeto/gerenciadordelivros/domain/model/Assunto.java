@@ -8,10 +8,20 @@ public class Assunto {
     private String descricao;
 
     public Assunto(String descricao) {
+        validarDescricao(descricao);
+        this.descricao = descricao;
+    }
+
+    public Assunto(Long id, String descricao) {
+        validarDescricao(descricao);
+        this.id = id;
+        this.descricao = descricao;
+    }
+
+    private void validarDescricao(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
             throw new RegraNegocioException("Descricao do assunto e obrigatoria.");
         }
-        this.descricao = descricao;
     }
 
     public Long getId() {

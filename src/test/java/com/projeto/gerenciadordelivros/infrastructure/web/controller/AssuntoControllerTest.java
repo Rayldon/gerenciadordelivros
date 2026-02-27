@@ -1,6 +1,8 @@
 package com.projeto.gerenciadordelivros.infrastructure.web.controller;
 
+import com.projeto.gerenciadordelivros.application.usecase.AtualizarAssuntoUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.CriarAssuntoUseCase;
+import com.projeto.gerenciadordelivros.application.usecase.ExcluirAssuntoUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.ListarAssuntosUseCase;
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Assunto;
@@ -18,9 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,6 +42,12 @@ class AssuntoControllerTest {
 
     @MockitoBean
     private ListarAssuntosUseCase listarAssuntosUseCase;
+
+    @MockitoBean
+    private AtualizarAssuntoUseCase atualizarAssuntoUseCase;
+
+    @MockitoBean
+    private ExcluirAssuntoUseCase excluirAssuntoUseCase;
 
     @MockitoBean
     private AssuntoWebMapper mapper;
@@ -91,5 +103,29 @@ class AssuntoControllerTest {
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.message").value("Corpo da requisicao invalido."))
                 .andExpect(jsonPath("$.path").value("/assuntos"));
+    }
+
+    @Test
+    void deveAtualizarAssuntoComSucesso() throws Exception {
+        Assunto domain = new Assunto("Arquitetura");
+        AssuntoResponse response = new AssuntoResponse("Arquitetura");
+
+        when(mapper.toDomain(any())).thenReturn(domain);
+        when(atualizarAssuntoUseCase.executar(eq(1L), eq(domain))).thenReturn(domain);
+        when(mapper.toResponse(domain)).thenReturn(response);
+
+        mockMvc.perform(put("/assuntos/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"descricao\":\"Arquitetura\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.descricao").value("Arquitetura"));
+    }
+
+    @Test
+    void deveExcluirAssuntoComSucesso() throws Exception {
+        doNothing().when(excluirAssuntoUseCase).executar(1L);
+
+        mockMvc.perform(delete("/assuntos/1"))
+                .andExpect(status().isNoContent());
     }
 }
