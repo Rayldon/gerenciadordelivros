@@ -2,6 +2,7 @@ package com.projeto.gerenciadordelivros.infrastructure.web.controller;
 
 import com.projeto.gerenciadordelivros.application.usecase.CriarAutorUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.ListarAutoresUseCase;
+import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Autor;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AutorResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.exception.GlobalExceptionHandler;
@@ -66,5 +67,29 @@ class AutorControllerTest {
         mockMvc.perform(get("/autores"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nome").value("Machado de Assis"));
+    }
+
+    @Test
+    void deveRetornarBadRequestQuandoNomeAutorForInvalido() throws Exception {
+        when(mapper.toDomain(any())).thenThrow(new RegraNegocioException("Nome do autor e obrigatorio."));
+
+        mockMvc.perform(post("/autores")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nome\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Nome do autor e obrigatorio."))
+                .andExpect(jsonPath("$.path").value("/autores"));
+    }
+
+    @Test
+    void deveRetornarBadRequestQuandoJsonForInvalido() throws Exception {
+        mockMvc.perform(post("/autores")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nome\":"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Corpo da requisicao invalido."))
+                .andExpect(jsonPath("$.path").value("/autores"));
     }
 }

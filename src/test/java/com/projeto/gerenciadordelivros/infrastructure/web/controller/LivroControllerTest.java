@@ -114,6 +114,17 @@ class LivroControllerTest {
                 .andExpect(jsonPath("$.path").value("/livros"));
     }
 
+    @Test
+    void deveRetornarBadRequestQuandoJsonForInvalido() throws Exception {
+        mockMvc.perform(post("/livros")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"titulo\":"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Corpo da requisicao invalido."))
+                .andExpect(jsonPath("$.path").value("/livros"));
+    }
+
     private Livro novoLivroValido() {
         return new Livro(
                 "Clean Code",

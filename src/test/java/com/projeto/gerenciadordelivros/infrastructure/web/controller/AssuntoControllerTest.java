@@ -2,6 +2,7 @@ package com.projeto.gerenciadordelivros.infrastructure.web.controller;
 
 import com.projeto.gerenciadordelivros.application.usecase.CriarAssuntoUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.ListarAssuntosUseCase;
+import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Assunto;
 import com.projeto.gerenciadordelivros.infrastructure.web.dto.AssuntoResponse;
 import com.projeto.gerenciadordelivros.infrastructure.web.exception.GlobalExceptionHandler;
@@ -66,5 +67,29 @@ class AssuntoControllerTest {
         mockMvc.perform(get("/assuntos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].descricao").value("Arquitetura"));
+    }
+
+    @Test
+    void deveRetornarBadRequestQuandoDescricaoAssuntoForInvalida() throws Exception {
+        when(mapper.toDomain(any())).thenThrow(new RegraNegocioException("Descricao do assunto e obrigatoria."));
+
+        mockMvc.perform(post("/assuntos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"descricao\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Descricao do assunto e obrigatoria."))
+                .andExpect(jsonPath("$.path").value("/assuntos"));
+    }
+
+    @Test
+    void deveRetornarBadRequestQuandoJsonForInvalido() throws Exception {
+        mockMvc.perform(post("/assuntos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"descricao\":"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.message").value("Corpo da requisicao invalido."))
+                .andExpect(jsonPath("$.path").value("/assuntos"));
     }
 }
