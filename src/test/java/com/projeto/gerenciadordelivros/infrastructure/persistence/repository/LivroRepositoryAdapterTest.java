@@ -63,9 +63,11 @@ class LivroRepositoryAdapterTest {
 
     @Test
     @Sql("classpath:scripts/test-data.sql")
-    void deveListarTodosOsLivros() {
-        var livros = adapter.listarTodos();
+    void deveListarLivrosPaginados() {
+        var pagina = adapter.listarPaginado(0, 10);
 
-        assertEquals(2, livros.size());
+        assertEquals(2, pagina.itens().size());
+        assertEquals(2, pagina.totalItens());
+        assertEquals(1, pagina.totalPaginas());
     }
 }

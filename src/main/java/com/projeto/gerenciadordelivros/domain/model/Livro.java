@@ -21,6 +21,23 @@ public class Livro {
     private Set<Assunto> assuntos;
 
     public Livro(String titulo, BigDecimal valor, Set<Autor> autores, Set<Assunto> assuntos) {
+        validar(titulo, valor, autores, assuntos);
+        this.titulo = titulo;
+        this.valor = valor.setScale(2, RoundingMode.HALF_UP);
+        this.autores = new HashSet<>(autores);
+        this.assuntos = new HashSet<>(assuntos);
+    }
+
+    public Livro(Long id, String titulo, BigDecimal valor, Set<Autor> autores, Set<Assunto> assuntos) {
+        validar(titulo, valor, autores, assuntos);
+        this.id = id;
+        this.titulo = titulo;
+        this.valor = valor.setScale(2, RoundingMode.HALF_UP);
+        this.autores = new HashSet<>(autores);
+        this.assuntos = new HashSet<>(assuntos);
+    }
+
+    private void validar(String titulo, BigDecimal valor, Set<Autor> autores, Set<Assunto> assuntos) {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new RegraNegocioException("Titulo do livro e obrigatorio.");
         }
@@ -42,11 +59,6 @@ public class Livro {
         if (assuntos == null || assuntos.isEmpty()) {
             throw new RegraNegocioException("Livro deve ter ao menos um assunto.");
         }
-
-        this.titulo = titulo;
-        this.valor = valor.setScale(2, RoundingMode.HALF_UP);
-        this.autores = new HashSet<>(autores);
-        this.assuntos = new HashSet<>(assuntos);
     }
 
     public Long getId() {

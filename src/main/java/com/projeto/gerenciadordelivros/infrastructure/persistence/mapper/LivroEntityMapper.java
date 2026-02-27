@@ -26,20 +26,21 @@ public class LivroEntityMapper {
 
     public Livro toDomain(LivroEntity entity) {
         Set<Autor> autores = entity.getAutores().stream()
-                .map(autorEntity -> new Autor(autorEntity.getNome()))
+                .map(autorEntity -> new Autor(autorEntity.getId(), autorEntity.getNome()))
                 .collect(Collectors.toSet());
 
         Set<Assunto> assuntos = entity.getAssuntos().stream()
-                .map(assuntoEntity -> new Assunto(assuntoEntity.getDescricao()))
+                .map(assuntoEntity -> new Assunto(assuntoEntity.getId(), assuntoEntity.getDescricao()))
                 .collect(Collectors.toSet());
 
-        return new Livro(entity.getTitulo(), entity.getValor(), autores, assuntos);
+        return new Livro(entity.getId(), entity.getTitulo(), entity.getValor(), autores, assuntos);
     }
 
     private Set<AutorEntity> toAutorEntitySet(Set<Autor> autores) {
         return autores.stream()
                 .map(autor -> {
                     AutorEntity entity = new AutorEntity();
+                    entity.setId(autor.getId());
                     entity.setNome(autor.getNome());
                     return entity;
                 })
@@ -50,6 +51,7 @@ public class LivroEntityMapper {
         return assuntos.stream()
                 .map(assunto -> {
                     AssuntoEntity entity = new AssuntoEntity();
+                    entity.setId(assunto.getId());
                     entity.setDescricao(assunto.getDescricao());
                     return entity;
                 })

@@ -38,9 +38,13 @@ class LivroE2ETest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.titulo").value("Clean Code E2E"));
 
-        mockMvc.perform(get("/livros"))
+        mockMvc.perform(get("/livros")
+                        .param("page", "0")
+                        .param("size", "10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].titulo").value("Clean Code E2E"));
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].titulo").value("Clean Code E2E"))
+                .andExpect(jsonPath("$.page").value(0))
+                .andExpect(jsonPath("$.size").value(10));
     }
 }

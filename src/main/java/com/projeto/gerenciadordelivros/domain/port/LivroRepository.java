@@ -2,7 +2,6 @@ package com.projeto.gerenciadordelivros.domain.port;
 
 import com.projeto.gerenciadordelivros.domain.model.Livro;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface LivroRepository {
@@ -11,5 +10,11 @@ public interface LivroRepository {
 
     Optional<Livro> buscarPorId(Long id);
 
-    List<Livro> listarTodos();
+    Paginacao<Livro> listarPaginado(int pagina, int tamanho);
+
+    Optional<Livro> atualizar(Long id, Livro livro);
+
+    boolean existePorId(Long id);
+
+    void deletarPorId(Long id);
 }
