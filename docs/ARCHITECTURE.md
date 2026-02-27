@@ -1,29 +1,35 @@
-## Visão Arquitetural
-A aplicação segue o padrão **Arquitetura Hexagonal (Ports and Adapters)**.
+﻿## Visao arquitetural
+A aplicacao segue estilo de Arquitetura Hexagonal (Ports and Adapters), com dependencia apontando para o dominio.
 
-### Princípios
-- O **Domínio** não depende de frameworks
-- Casos de uso orquestram regras de negócio
-- Adapters conectam o mundo externo (REST, banco, relatórios)
-- Dependências sempre apontam para o centro (domínio)
+Regra principal:
+- `domain` nao depende de Spring
+- `application` depende de portas do dominio
+- `infrastructure` implementa portas e integra REST/JPA
 
-### Camadas
-
-```
-Domain  <- Application <- Adapters
-```
-
-### Estrutura de Pacotes
+## Camadas
 - `domain`
-    - entidades
-    - exceções de negócio
-    - portas (interfaces)
+  - modelos (`Livro`, `Autor`, `Assunto`)
+  - excecoes de negocio (`RegraNegocioException`)
+  - portas (`LivroRepository`, `AutorRepository`, `AssuntoRepository`)
 - `application`
-    - casos de uso
-- `adapter.in`
-    - controllers REST
-- `adapter.out`
-    - persistência JPA
-    - relatórios
+  - casos de uso de criar e listar
+- `infrastructure.persistence`
+  - entities JPA
+  - repositories JPA
+  - adapters de persistencia
+- `infrastructure.web`
+  - controllers REST
+  - DTOs de entrada/saida
+  - mappers web
+  - exception handler global
 
----
+## Decisoes tecnicas relevantes
+- Validacao de regras de negocio no dominio
+- Controllers sem logica de regra (somente orquestracao HTTP)
+- Mapeamento DTO <-> dominio isolado em mappers dedicados
+- Tratamento de erro padronizado em `GlobalExceptionHandler`
+
+## Trade-offs
+- Projeto privilegia clareza de arquitetura e testabilidade
+- Nao ha ainda camada de seguranca/autenticacao
+- Endpoints implementam somente criar e listar (escopo atual)

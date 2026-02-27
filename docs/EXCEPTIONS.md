@@ -1,13 +1,21 @@
-## Estratégia de Tratamento de Erros
+﻿## Tratamento de erros
 
-### Tipos de Exceção
-- Exceções de domínio (regras de negócio)
-- Exceções de infraestrutura (banco de dados)
+A API centraliza erros em `GlobalExceptionHandler` (`@RestControllerAdvice`).
 
-### Centralização
-O tratamento de erros é centralizado utilizando `@ControllerAdvice`, garantindo:
-- respostas padronizadas
-- códigos HTTP adequados
-- mensagens claras
+## Tipos tratados
+- `RegraNegocioException` -> HTTP 400
+- `HttpMessageNotReadableException` (JSON invalido) -> HTTP 400
+- `Exception` generica -> HTTP 500
 
----
+## Formato de resposta de erro
+`ErrorResponse`:
+- `timestamp`
+- `status`
+- `error`
+- `message`
+- `path`
+
+## Motivacao
+- manter resposta padrao para o cliente
+- separar regra de dominio de regra de transporte HTTP
+- facilitar observabilidade e debug

@@ -1,8 +1,21 @@
-## Execução Local
+﻿## Execucao local
 
-1. Clonar o projeto
-2. Executar a aplicação Spring Boot
-3. Acessar a API REST
-4. Executar o frontend Angular
+## 1) Pre requisitos
+- Java 21
+- `JAVA_HOME` configurado
 
-Todos os scripts SQL e instruções estão versionados no repositório.
+## 2) Subir a aplicacao
+```powershell
+.\mvnw spring-boot:run
+```
+
+## 3) Rodar testes
+```powershell
+.\mvnw test
+```
+
+## 4) H2 Console
+Configurado em:
+- `/h2-console`
+
+Obs: o projeto atual e backend. Frontend nao esta versionado neste repositorio.

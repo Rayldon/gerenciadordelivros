@@ -1,22 +1,66 @@
-## Visão Geral
-Este projeto implementa um sistema de **Biblioteca** com CRUD de **Livro**, **Autor** e **Assunto**, seguindo **Arquitetura Hexagonal**, princípios **SOLID**, **Clean Code** e boas práticas de engenharia de software.
+﻿# Gerenciador de Livros
+Projeto backend em Java/Spring Boot para cadastro e consulta de livros, autores e assuntos.
 
-O objetivo é demonstrar organização arquitetural, clareza de domínio, tratamento adequado de erros, testes automatizados e documentação.
+## Objetivo tecnico
+Demonstrar:
+- modelagem de dominio com regras explicitas
+- arquitetura em camadas com isolamento de responsabilidades
+- API REST com DTOs, mapeadores e tratamento centralizado de erros
+- estrategia de testes (unitario, slice e e2e)
 
-### Tecnologias
-- Java + Spring Boot
-- Spring Web (API REST)
+## Stack
+- Java 21
+- Spring Boot 4.0.3
+- Spring Web MVC
 - Spring Data JPA
-- Banco de dados H2
+- H2 (memoria)
 - JUnit 5 + Mockito
-- Angular + NGRX (frontend)
-- JasperReports (relatórios)
 
-## Documentação
+## Endpoints implementados
+- `POST /livros`
+- `GET /livros`
+- `POST /autores`
+- `GET /autores`
+- `POST /assuntos`
+- `GET /assuntos`
+
+## Como executar
+Pre requisitos:
+- JDK 21
+- `JAVA_HOME` configurado
+
+Comandos:
+```bash
+./mvnw spring-boot:run
+```
+No Windows PowerShell:
+```powershell
+.\mvnw spring-boot:run
+```
+
+## Como rodar testes
+Suite completa:
+```powershell
+.\mvnw test
+```
+
+Somente e2e:
+```powershell
+.\mvnw -Dtest=LivroE2ETest test
+```
+
+## Pontos importantes para avaliacao tecnica
+- Dominio sem dependencia de Spring (regras no centro do sistema)
+- Casos de uso dependem de portas (`domain.port`) e nao de JPA direto
+- Adapters de persistencia e web ficam na borda da aplicacao
+- `GlobalExceptionHandler` padroniza respostas de erro
+- Testes cobrem regra de dominio, repositorio, controllers (MockMvc) e 1 fluxo e2e completo
+
+## Estrutura de documentacao
 - [Arquitetura](docs/ARCHITECTURE.md)
-- [Domínio](docs/DOMAIN.md)
+- [Dominio](docs/DOMAIN.md)
 - [Casos de Uso](docs/USE_CASES.md)
-- [Tratamento de Erros](docs/EXCEPTIONS.md)
-- [Testes](docs/TEST_STRATEGY.md)
+- [Erros e Excecoes](docs/EXCEPTIONS.md)
+- [Estrategia de Testes](docs/TEST_STRATEGY.md)
 - [Banco de Dados](docs/DATABASE.md)
-- [Deploy](docs/DEPLOY.md)
+- [Execucao local](docs/DEPLOY.md)

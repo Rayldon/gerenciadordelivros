@@ -1,26 +1,36 @@
-## Linguagem Ubíqua
+﻿## Linguagem do dominio
 
 ### Livro
-Representa uma obra disponível na biblioteca.
+Representa uma obra cadastrada na biblioteca.
 
-Atributos principais:
-- Título
-- Editora
-- Edição
-- Ano de publicação
-- Valor (R$)
-- Autores
-- Assuntos
+Campos usados no dominio:
+- titulo
+- valor
+- autores
+- assuntos
 
 ### Autor
-Pessoa responsável pela autoria de um ou mais livros.
+Representa o nome do autor do livro.
 
 ### Assunto
-Categoria temática associada aos livros.
+Representa a categoria/tema do livro.
 
-### Regras de Negócio
-- Um livro deve possuir ao menos um autor
-- Um livro pode possuir múltiplos assuntos
-- Valor do livro deve ser maior que zero
+## Regras de negocio implementadas
 
----
+### Autor
+- nome obrigatorio
+- nome nao pode ser vazio ou em branco
+
+### Assunto
+- descricao obrigatoria
+- descricao nao pode ser vazia ou em branco
+
+### Livro
+- titulo obrigatorio
+- valor obrigatorio e nao negativo
+- precisa de pelo menos 1 autor
+- nao permite autores duplicados (comparacao por nome normalizado)
+- precisa de pelo menos 1 assunto
+
+## Onde as regras vivem
+As validacoes estao nos construtores das classes de dominio, lancando `RegraNegocioException` quando necessario.
