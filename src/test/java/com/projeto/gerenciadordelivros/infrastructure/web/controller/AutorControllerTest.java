@@ -1,6 +1,8 @@
 package com.projeto.gerenciadordelivros.infrastructure.web.controller;
 
+import com.projeto.gerenciadordelivros.application.usecase.AtualizarAutorUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.CriarAutorUseCase;
+import com.projeto.gerenciadordelivros.application.usecase.ExcluirAutorUseCase;
 import com.projeto.gerenciadordelivros.application.usecase.ListarAutoresUseCase;
 import com.projeto.gerenciadordelivros.domain.exception.RegraNegocioException;
 import com.projeto.gerenciadordelivros.domain.model.Autor;
@@ -18,9 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,6 +42,12 @@ class AutorControllerTest {
 
     @MockitoBean
     private ListarAutoresUseCase listarAutoresUseCase;
+
+    @MockitoBean
+    private AtualizarAutorUseCase atualizarAutorUseCase;
+
+    @MockitoBean
+    private ExcluirAutorUseCase excluirAutorUseCase;
 
     @MockitoBean
     private AutorWebMapper mapper;
@@ -91,5 +103,29 @@ class AutorControllerTest {
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.message").value("Corpo da requisicao invalido."))
                 .andExpect(jsonPath("$.path").value("/autores"));
+    }
+
+    @Test
+    void deveAtualizarAutorComSucesso() throws Exception {
+        Autor domain = new Autor("Machado de Assis");
+        AutorResponse response = new AutorResponse("Machado de Assis");
+
+        when(mapper.toDomain(any())).thenReturn(domain);
+        when(atualizarAutorUseCase.executar(eq(1L), eq(domain))).thenReturn(domain);
+        when(mapper.toResponse(domain)).thenReturn(response);
+
+        mockMvc.perform(put("/autores/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"nome\":\"Machado de Assis\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Machado de Assis"));
+    }
+
+    @Test
+    void deveExcluirAutorComSucesso() throws Exception {
+        doNothing().when(excluirAutorUseCase).executar(1L);
+
+        mockMvc.perform(delete("/autores/1"))
+                .andExpect(status().isNoContent());
     }
 }
