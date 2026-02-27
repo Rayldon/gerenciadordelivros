@@ -3,6 +3,8 @@ package com.projeto.gerenciadordelivros.infrastructure.persistence.repository;
 import com.projeto.gerenciadordelivros.domain.model.Assunto;
 import com.projeto.gerenciadordelivros.domain.model.Autor;
 import com.projeto.gerenciadordelivros.domain.model.Livro;
+import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AssuntoEntity;
+import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AutorEntity;
 import com.projeto.gerenciadordelivros.infrastructure.persistence.mapper.LivroEntityMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ class LivroRepositoryAdapterTest {
 
     @Autowired
     private LivroJpaRepository livroJpaRepository;
+
+    @Autowired
+    private AutorJpaRepository autorJpaRepository;
+
+    @Autowired
+    private AssuntoJpaRepository assuntoJpaRepository;
 
     @Test
     void deveSalvarLivroComSucesso() {
@@ -69,5 +77,29 @@ class LivroRepositoryAdapterTest {
         assertEquals(2, pagina.itens().size());
         assertEquals(2, pagina.totalItens());
         assertEquals(1, pagina.totalPaginas());
+    }
+
+    @Test
+    void naoDeveDuplicarAutorEAssuntoAoSalvarLivroComDadosExistentes() {
+        AutorEntity autorExistente = new AutorEntity();
+        autorExistente.setNome("Robert C. Martin");
+        autorJpaRepository.save(autorExistente);
+
+        AssuntoEntity assuntoExistente = new AssuntoEntity();
+        assuntoExistente.setDescricao("Arquitetura");
+        assuntoJpaRepository.save(assuntoExistente);
+
+        Livro livro = new Livro(
+                "Refactoring",
+                new BigDecimal("99.90"),
+                Set.of(new Autor("Robert C. Martin")),
+                Set.of(new Assunto("Arquitetura"))
+        );
+
+        adapter.salvar(livro);
+
+        assertEquals(1, livroJpaRepository.count());
+        assertEquals(1, autorJpaRepository.count());
+        assertEquals(1, assuntoJpaRepository.count());
     }
 }

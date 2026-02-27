@@ -3,25 +3,33 @@ package com.projeto.gerenciadordelivros.infrastructure.persistence.repository;
 import com.projeto.gerenciadordelivros.domain.model.Livro;
 import com.projeto.gerenciadordelivros.domain.port.LivroRepository;
 import com.projeto.gerenciadordelivros.domain.port.Paginacao;
+import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AssuntoEntity;
+import com.projeto.gerenciadordelivros.infrastructure.persistence.entity.AutorEntity;
 import com.projeto.gerenciadordelivros.infrastructure.persistence.mapper.LivroEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
 public class LivroRepositoryAdapter implements LivroRepository {
 
     private final LivroJpaRepository livroJpaRepository;
+    private final AutorJpaRepository autorJpaRepository;
+    private final AssuntoJpaRepository assuntoJpaRepository;
     private final LivroEntityMapper livroEntityMapper;
 
     @Override
     public Livro salvar(Livro livro) {
-        return livroEntityMapper.toDomain(
-                livroJpaRepository.save(livroEntityMapper.toEntity(livro))
-        );
+        var entity = livroEntityMapper.toEntity(livro);
+        entity.setAutores(resolverAutores(entity.getAutores()));
+        entity.setAssuntos(resolverAssuntos(entity.getAssuntos()));
+
+        return livroEntityMapper.toDomain(livroJpaRepository.save(entity));
     }
 
     @Override
@@ -51,8 +59,8 @@ public class LivroRepositoryAdapter implements LivroRepository {
                     var atualizado = livroEntityMapper.toEntity(livro);
                     entity.setTitulo(atualizado.getTitulo());
                     entity.setValor(atualizado.getValor());
-                    entity.setAutores(atualizado.getAutores());
-                    entity.setAssuntos(atualizado.getAssuntos());
+                    entity.setAutores(resolverAutores(atualizado.getAutores()));
+                    entity.setAssuntos(resolverAssuntos(atualizado.getAssuntos()));
                     return livroEntityMapper.toDomain(livroJpaRepository.save(entity));
                 });
     }
@@ -65,5 +73,43 @@ public class LivroRepositoryAdapter implements LivroRepository {
     @Override
     public void deletarPorId(Long id) {
         livroJpaRepository.deleteById(id);
+    }
+
+    private Set<AutorEntity> resolverAutores(Set<AutorEntity> autores) {
+        var resolvidos = new LinkedHashSet<AutorEntity>();
+
+        for (AutorEntity autor : autores) {
+            var nome = autor.getNome() == null ? null : autor.getNome().trim();
+
+            var resolved = autorJpaRepository.findByNomeIgnoreCase(nome)
+                    .orElseGet(() -> {
+                        AutorEntity novo = new AutorEntity();
+                        novo.setNome(nome);
+                        return autorJpaRepository.save(novo);
+                    });
+
+            resolvidos.add(resolved);
+        }
+
+        return resolvidos;
+    }
+
+    private Set<AssuntoEntity> resolverAssuntos(Set<AssuntoEntity> assuntos) {
+        var resolvidos = new LinkedHashSet<AssuntoEntity>();
+
+        for (AssuntoEntity assunto : assuntos) {
+            var descricao = assunto.getDescricao() == null ? null : assunto.getDescricao().trim();
+
+            var resolved = assuntoJpaRepository.findByDescricaoIgnoreCase(descricao)
+                    .orElseGet(() -> {
+                        AssuntoEntity novo = new AssuntoEntity();
+                        novo.setDescricao(descricao);
+                        return assuntoJpaRepository.save(novo);
+                    });
+
+            resolvidos.add(resolved);
+        }
+
+        return resolvidos;
     }
 }
