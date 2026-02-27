@@ -13,6 +13,6 @@ public class AssuntoWebMapper {
     }
 
     public AssuntoResponse toResponse(Assunto assunto) {
-        return new AssuntoResponse(assunto.getDescricao());
+        return new AssuntoResponse(assunto.getId(), assunto.getDescricao());
     }
 }

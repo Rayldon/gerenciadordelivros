@@ -55,7 +55,7 @@ class AutorControllerTest {
     @Test
     void deveCriarAutorComSucesso() throws Exception {
         Autor domain = new Autor("Machado de Assis");
-        AutorResponse response = new AutorResponse("Machado de Assis");
+        AutorResponse response = new AutorResponse(1L, "Machado de Assis");
 
         when(mapper.toDomain(any())).thenReturn(domain);
         when(criarAutorUseCase.executar(domain)).thenReturn(domain);
@@ -65,19 +65,21 @@ class AutorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\":\"Machado de Assis\"}"))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.nome").value("Machado de Assis"));
     }
 
     @Test
     void deveListarAutoresComSucesso() throws Exception {
         Autor domain = new Autor("Machado de Assis");
-        AutorResponse response = new AutorResponse("Machado de Assis");
+        AutorResponse response = new AutorResponse(1L, "Machado de Assis");
 
         when(listarAutoresUseCase.executar()).thenReturn(List.of(domain));
         when(mapper.toResponse(domain)).thenReturn(response);
 
         mockMvc.perform(get("/autores"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].nome").value("Machado de Assis"));
     }
 
@@ -108,7 +110,7 @@ class AutorControllerTest {
     @Test
     void deveAtualizarAutorComSucesso() throws Exception {
         Autor domain = new Autor("Machado de Assis");
-        AutorResponse response = new AutorResponse("Machado de Assis");
+        AutorResponse response = new AutorResponse(1L, "Machado de Assis");
 
         when(mapper.toDomain(any())).thenReturn(domain);
         when(atualizarAutorUseCase.executar(eq(1L), eq(domain))).thenReturn(domain);
@@ -118,6 +120,7 @@ class AutorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nome\":\"Machado de Assis\"}"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.nome").value("Machado de Assis"));
     }
 

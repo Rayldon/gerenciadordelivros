@@ -55,7 +55,7 @@ class AssuntoControllerTest {
     @Test
     void deveCriarAssuntoComSucesso() throws Exception {
         Assunto domain = new Assunto("Arquitetura");
-        AssuntoResponse response = new AssuntoResponse("Arquitetura");
+        AssuntoResponse response = new AssuntoResponse(1L, "Arquitetura");
 
         when(mapper.toDomain(any())).thenReturn(domain);
         when(criarAssuntoUseCase.executar(domain)).thenReturn(domain);
@@ -65,19 +65,21 @@ class AssuntoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\":\"Arquitetura\"}"))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.descricao").value("Arquitetura"));
     }
 
     @Test
     void deveListarAssuntosComSucesso() throws Exception {
         Assunto domain = new Assunto("Arquitetura");
-        AssuntoResponse response = new AssuntoResponse("Arquitetura");
+        AssuntoResponse response = new AssuntoResponse(1L, "Arquitetura");
 
         when(listarAssuntosUseCase.executar()).thenReturn(List.of(domain));
         when(mapper.toResponse(domain)).thenReturn(response);
 
         mockMvc.perform(get("/assuntos"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0].descricao").value("Arquitetura"));
     }
 
@@ -108,7 +110,7 @@ class AssuntoControllerTest {
     @Test
     void deveAtualizarAssuntoComSucesso() throws Exception {
         Assunto domain = new Assunto("Arquitetura");
-        AssuntoResponse response = new AssuntoResponse("Arquitetura");
+        AssuntoResponse response = new AssuntoResponse(1L, "Arquitetura");
 
         when(mapper.toDomain(any())).thenReturn(domain);
         when(atualizarAssuntoUseCase.executar(eq(1L), eq(domain))).thenReturn(domain);
@@ -118,6 +120,7 @@ class AssuntoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\":\"Arquitetura\"}"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.descricao").value("Arquitetura"));
     }
 

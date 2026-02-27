@@ -34,6 +34,6 @@ public class LivroWebMapper {
                 .map(Assunto::getDescricao)
                 .collect(Collectors.toSet());
 
-        return new LivroResponse(livro.getTitulo(), livro.getValor(), autores, assuntos);
+        return new LivroResponse(livro.getId(), livro.getTitulo(), livro.getValor(), autores, assuntos);
     }
 }

@@ -13,6 +13,6 @@ public class AutorWebMapper {
     }
 
     public AutorResponse toResponse(Autor autor) {
-        return new AutorResponse(autor.getNome());
+        return new AutorResponse(autor.getId(), autor.getNome());
     }
 }

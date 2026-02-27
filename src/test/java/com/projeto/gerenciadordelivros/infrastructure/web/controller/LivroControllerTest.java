@@ -61,6 +61,7 @@ class LivroControllerTest {
     void deveCriarLivroComSucesso() throws Exception {
         Livro domain = novoLivroValido();
         LivroResponse response = new LivroResponse(
+                1L,
                 "Clean Code",
                 new BigDecimal("120.00"),
                 Set.of("Robert C. Martin"),
@@ -82,6 +83,7 @@ class LivroControllerTest {
                                 }
                                 """))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.titulo").value("Clean Code"))
                 .andExpect(jsonPath("$.valor").value(120.00));
     }
@@ -90,6 +92,7 @@ class LivroControllerTest {
     void deveListarLivrosComSucesso() throws Exception {
         Livro livro = novoLivroValido();
         LivroResponse response = new LivroResponse(
+                1L,
                 "Clean Code",
                 new BigDecimal("120.00"),
                 Set.of("Robert C. Martin"),
@@ -102,6 +105,7 @@ class LivroControllerTest {
 
         mockMvc.perform(get("/livros"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(1))
                 .andExpect(jsonPath("$.content[0].titulo").value("Clean Code"))
                 .andExpect(jsonPath("$.page").value(0))
                 .andExpect(jsonPath("$.size").value(10))
@@ -155,6 +159,7 @@ class LivroControllerTest {
     void deveAtualizarLivroComSucesso() throws Exception {
         Livro domain = novoLivroValido();
         LivroResponse response = new LivroResponse(
+                1L,
                 "Clean Code",
                 new BigDecimal("120.00"),
                 Set.of("Robert C. Martin"),
@@ -176,6 +181,7 @@ class LivroControllerTest {
                                 }
                                 """))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.titulo").value("Clean Code"))
                 .andExpect(jsonPath("$.valor").value(120.00));
     }
