@@ -47,14 +47,17 @@ CREATE TABLE livro_assunto
         FOREIGN KEY (assunto_cod_as) REFERENCES assunto (cod_as)
 );
 
-
--- VIEW DO RELATÓRIO
+-- VIEW DO RELATORIO
 CREATE VIEW vw_relatorio_autor AS
-SELECT a.cod_au AS autor_id,
-       a.nome   AS autor_nome,
-       l.cod_l  AS livro_id,
-       l.titulo AS livro_titulo,
-       l.valor  AS livro_valor
+SELECT a.cod_au      AS autor_id,
+       a.nome        AS autor_nome,
+       l.cod_l       AS livro_id,
+       l.titulo      AS livro_titulo,
+       l.valor       AS livro_valor,
+       s.cod_as      AS assunto_id,
+       s.descricao   AS assunto_descricao
 FROM autor a
          JOIN livro_autor la ON la.autor_cod_au = a.cod_au
-         JOIN livro l ON l.cod_l = la.livro_cod_l;
+         JOIN livro l ON l.cod_l = la.livro_cod_l
+         JOIN livro_assunto ls ON ls.livro_cod_l = l.cod_l
+         JOIN assunto s ON s.cod_as = ls.assunto_cod_as;
