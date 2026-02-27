@@ -12,12 +12,16 @@
 - `CriarAssuntoUseCase`
 - `ListarAssuntosUseCase`
 
+### Relatorio
+- `GerarRelatorioAutoresUseCase`
+
 ## Contratos de persistencia
 - `LivroRepository`
 - `AutorRepository`
 - `AssuntoRepository`
+- `RelatorioAutoresPort`
 
-As implementacoes concretas ficam em `infrastructure.persistence.repository`.
+As implementacoes concretas ficam em `infrastructure.persistence.repository` e `infrastructure.report`.
 
 ## Endpoints x use cases
 - `POST /livros` -> `CriarLivroUseCase`
@@ -26,3 +30,4 @@ As implementacoes concretas ficam em `infrastructure.persistence.repository`.
 - `GET /autores` -> `ListarAutoresUseCase`
 - `POST /assuntos` -> `CriarAssuntoUseCase`
 - `GET /assuntos` -> `ListarAssuntosUseCase`
+- `GET /relatorios/autores` -> `GerarRelatorioAutoresUseCase`

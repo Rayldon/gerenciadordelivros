@@ -14,6 +14,7 @@ Demonstrar:
 - Spring Web MVC
 - Spring Data JPA
 - H2 (memoria)
+- JasperReports (geracao de PDF)
 - JUnit 5 + Mockito
 
 ## Endpoints implementados
@@ -23,6 +24,7 @@ Demonstrar:
 - `GET /autores`
 - `POST /assuntos`
 - `GET /assuntos`
+- `GET /relatorios/autores` (PDF agrupado por autor)
 
 ## Como executar
 Pre requisitos:
@@ -53,6 +55,7 @@ Somente e2e:
 - Dominio sem dependencia de Spring (regras no centro do sistema)
 - Casos de uso dependem de portas (`domain.port`) e nao de JPA direto
 - Adapters de persistencia e web ficam na borda da aplicacao
+- Relatorio PDF e gerado a partir da view `vw_relatorio_autor`
 - `GlobalExceptionHandler` padroniza respostas de erro
 - Testes cobrem regra de dominio, repositorio, controllers (MockMvc) e 1 fluxo e2e completo
 

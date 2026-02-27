@@ -13,6 +13,9 @@ Tabelas:
 
 View:
 - `vw_relatorio_autor`
+  - Origem do relatorio PDF
+  - Junta `autor`, `livro` e `assunto`
+  - Permite agrupamento por autor mesmo com livro de multiplos autores
 
 ## Configuracao principal
 - `src/main/resources/application.properties`
