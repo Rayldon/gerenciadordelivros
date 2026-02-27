@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN"
-        "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-<jasperReport name="relatorio_autor_livros"
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="relatorio_autor_livros"
               pageWidth="595"
               pageHeight="842"
               columnWidth="535"
@@ -20,6 +21,9 @@
             <band height="24">
                 <textField>
                     <reportElement x="0" y="2" width="535" height="20"/>
+                    <box>
+                        <pen lineWidth="0.6"/>
+                    </box>
                     <textElement>
                         <font size="13" isBold="true"/>
                     </textElement>
@@ -45,6 +49,9 @@
         <band height="20">
             <staticText>
                 <reportElement x="10" y="0" width="255" height="18"/>
+                <box>
+                    <pen lineWidth="0.6"/>
+                </box>
                 <textElement>
                     <font isBold="true"/>
                 </textElement>
@@ -52,6 +59,9 @@
             </staticText>
             <staticText>
                 <reportElement x="275" y="0" width="170" height="18"/>
+                <box>
+                    <pen lineWidth="0.6"/>
+                </box>
                 <textElement>
                     <font isBold="true"/>
                 </textElement>
@@ -59,6 +69,9 @@
             </staticText>
             <staticText>
                 <reportElement x="450" y="0" width="80" height="18"/>
+                <box>
+                    <pen lineWidth="0.6"/>
+                </box>
                 <textElement textAlignment="Right">
                     <font isBold="true"/>
                 </textElement>
@@ -71,14 +84,23 @@
         <band height="18">
             <textField>
                 <reportElement x="10" y="0" width="255" height="16"/>
+                <box>
+                    <pen lineWidth="0.4"/>
+                </box>
                 <textFieldExpression><![CDATA[$F{livroTitulo}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="275" y="0" width="170" height="16"/>
+                <box>
+                    <pen lineWidth="0.4"/>
+                </box>
                 <textFieldExpression><![CDATA[$F{assuntoDescricao}]]></textFieldExpression>
             </textField>
             <textField pattern="#,##0.00">
                 <reportElement x="450" y="0" width="80" height="16"/>
+                <box>
+                    <pen lineWidth="0.4"/>
+                </box>
                 <textElement textAlignment="Right"/>
                 <textFieldExpression><![CDATA[$F{livroValor}]]></textFieldExpression>
             </textField>
